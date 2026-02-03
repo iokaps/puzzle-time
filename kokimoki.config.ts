@@ -4,7 +4,10 @@ import {
 	gameConfigStoreSchema,
 	gameSessionStoreSchema,
 	localPlayerStoreSchema,
-	playersStoreSchema
+	localPuzzleStoreSchema,
+	playerProgressStoreSchema,
+	playersStoreSchema,
+	puzzleStoreSchema
 } from './src/state/schemas';
 
 /**
@@ -98,7 +101,10 @@ export const kokimokiConfig: KokimokiKitConfig = {
 		},
 		{ pattern: 'game-session', schema: gameSessionStoreSchema },
 		{ pattern: 'players-registry', schema: playersStoreSchema },
-		{ pattern: 'local-player', schema: localPlayerStoreSchema, local: true }
+		{ pattern: 'local-player', schema: localPlayerStoreSchema, local: true },
+		{ pattern: 'puzzle-state', schema: puzzleStoreSchema },
+		{ pattern: 'player-progress', schema: playerProgressStoreSchema },
+		{ pattern: 'local-puzzle', schema: localPuzzleStoreSchema, local: true }
 	],
 
 	/**

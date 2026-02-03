@@ -4,31 +4,34 @@ import { withKmProviders } from '@/components/with-km-providers';
 import { withModeGuard } from '@/components/with-mode-guard';
 import { useGlobalController } from '@/hooks/useGlobalController';
 import { useMeta } from '@/hooks/useMeta';
+import { usePuzzleController } from '@/hooks/usePuzzleController';
 import { PlayerLayout } from '@/layouts/player';
-import { localPlayerActions } from '@/state/actions/local-player-actions';
-import { gameSessionStore } from '@/state/stores/game-session-store';
+import { kmClient } from '@/services/km-client';
+import { playerProgressActions } from '@/state/actions/player-progress-actions';
 import { localPlayerStore } from '@/state/stores/local-player-store';
+import { puzzleStore } from '@/state/stores/puzzle-store';
+import { BetweenRoundsView } from '@/views/between-rounds-view';
 import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
-import { GameStateView } from '@/views/game-state-view';
+import { PuzzleGameView } from '@/views/puzzle-game-view';
+import { PuzzleResultsView } from '@/views/puzzle-results-view';
 import { useSnapshot } from '@kokimoki/app';
 import * as React from 'react';
 
 const App: React.FC = () => {
 	useMeta();
 	useGlobalController();
+	usePuzzleController();
 
-	const { name, currentView } = useSnapshot(localPlayerStore.proxy);
-	const { started } = useSnapshot(gameSessionStore.proxy);
+	const { name } = useSnapshot(localPlayerStore.proxy);
+	const { phase } = useSnapshot(puzzleStore.proxy);
 
+	// Initialize player progress when joining
 	React.useEffect(() => {
-		// While game start, force view to 'shared-state', otherwise to 'lobby'
-		if (started) {
-			localPlayerActions.setCurrentView('game-state');
-		} else {
-			localPlayerActions.setCurrentView('lobby');
+		if (name && phase === 'playing') {
+			playerProgressActions.initializePlayer(kmClient.id);
 		}
-	}, [started]);
+	}, [name, phase]);
 
 	if (!name) {
 		return (
@@ -41,7 +44,7 @@ const App: React.FC = () => {
 		);
 	}
 
-	if (!started) {
+	if (phase === 'lobby') {
 		return (
 			<PlayerLayout.Root>
 				<PlayerLayout.Header>
@@ -59,13 +62,45 @@ const App: React.FC = () => {
 		);
 	}
 
+	if (phase === 'ended') {
+		return (
+			<PlayerLayout.Root>
+				<PlayerLayout.Header />
+
+				<PlayerLayout.Main>
+					<PuzzleResultsView />
+				</PlayerLayout.Main>
+
+				<PlayerLayout.Footer>
+					<NameLabel name={name} />
+				</PlayerLayout.Footer>
+			</PlayerLayout.Root>
+		);
+	}
+
+	if (phase === 'between-rounds') {
+		return (
+			<PlayerLayout.Root>
+				<PlayerLayout.Header />
+
+				<PlayerLayout.Main>
+					<BetweenRoundsView />
+				</PlayerLayout.Main>
+
+				<PlayerLayout.Footer>
+					<NameLabel name={name} />
+				</PlayerLayout.Footer>
+			</PlayerLayout.Root>
+		);
+	}
+
+	// Playing
 	return (
 		<PlayerLayout.Root>
 			<PlayerLayout.Header />
 
 			<PlayerLayout.Main>
-				{currentView === 'game-state' && <GameStateView />}
-				{/* Add new views here */}
+				<PuzzleGameView />
 			</PlayerLayout.Main>
 
 			<PlayerLayout.Footer>

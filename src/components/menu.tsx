@@ -30,7 +30,7 @@ export function PlayerMenu() {
 			<button
 				type="button"
 				onClick={handleOpenHelp}
-				className="flex size-9 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-slate-900 hover:text-slate-50"
+				className="flex size-9 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-zinc-800 hover:text-white"
 			>
 				<HelpCircle className="size-5" />
 				<span className="sr-only">{t('ui:menuHelpAriaLabel')}</span>

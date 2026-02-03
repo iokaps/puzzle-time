@@ -9,8 +9,10 @@ export function GameLobbyView() {
 	const { t } = useTranslation();
 
 	return (
-		<article className="prose">
-			<Markdown>{t('ui:gameLobbyMd')}</Markdown>
-		</article>
+		<div className="flex flex-1 flex-col items-center justify-center">
+			<article className="prose prose-invert">
+				<Markdown>{t('ui:gameLobbyMd')}</Markdown>
+			</article>
+		</div>
 	);
 }

@@ -28,11 +28,11 @@ export function CreateProfileView() {
 	};
 
 	return (
-		<div className="mx-auto w-full max-w-96 space-y-12">
-			<article className="prose text-center">
+		<div className="mx-auto flex w-full max-w-96 flex-1 flex-col items-center justify-center space-y-12">
+			<article className="prose prose-invert text-center">
 				<Markdown>{t('ui:createProfileMd')}</Markdown>
 			</article>
-			<form onSubmit={handleSubmit} className="grid gap-4">
+			<form onSubmit={handleSubmit} className="grid w-full gap-4">
 				<input
 					type="text"
 					placeholder={t('ui:playerNamePlaceholder')}

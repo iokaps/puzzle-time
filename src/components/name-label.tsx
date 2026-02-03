@@ -13,8 +13,8 @@ export function NameLabel({ name }: NameLabelProps) {
 
 	return (
 		<div className="flex items-center gap-2">
-			<span className="text-slate-500">{t('ui:playerNameLabel')}</span>
-			<span className="font-semibold">{name}</span>
+			<span className="text-zinc-400">{t('ui:playerNameLabel')}</span>
+			<span className="font-semibold text-white">{name}</span>
 		</div>
 	);
 }
