@@ -16,7 +16,7 @@ export function PlayerMenu() {
 			content: (
 				<div className="max-h-full w-full overflow-y-auto">
 					<div className="container mx-auto px-4 py-16">
-						<article className="prose">
+						<article className="prose prose-invert">
 							<Markdown>{t('ui:menuHelpMd')}</Markdown>
 						</article>
 					</div>

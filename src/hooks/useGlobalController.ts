@@ -50,17 +50,33 @@ export function useGlobalController(): boolean {
 
 	// Maintain connection that is assigned to be the global controller
 	useEffect(() => {
-		// Check if global controller is online
-		if (connectionIds.has(controllerConnectionId)) {
+		// Check if we have any connections to work with
+		if (connectionIds.size === 0) {
 			return;
 		}
 
-		// Select new host, sorting by connection id
+		// Check if global controller is online
+		if (controllerConnectionId && connectionIds.has(controllerConnectionId)) {
+			return;
+		}
+
+		// Select new controller, sorting by connection id for deterministic election
+		// This ensures all clients elect the same controller
 		kmClient
 			.transact([gameSessionStore], ([gameSessionState]) => {
+				// Re-check inside transaction to avoid race conditions
+				const currentController = gameSessionState.controllerConnectionId;
+				if (currentController && connectionIds.has(currentController)) {
+					return; // Controller is still valid
+				}
+
 				const connectionIdsArray = Array.from(connectionIds);
 				connectionIdsArray.sort();
-				gameSessionState.controllerConnectionId = connectionIdsArray[0] || '';
+				const newController = connectionIdsArray[0];
+
+				if (newController) {
+					gameSessionState.controllerConnectionId = newController;
+				}
 			})
 			.then(() => {})
 			.catch(() => {});
