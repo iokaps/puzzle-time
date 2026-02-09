@@ -9,7 +9,11 @@ import { localPuzzleStore } from '@/state/stores/local-puzzle-store';
 import { playerProgressStore } from '@/state/stores/player-progress-store';
 import { puzzleStore } from '@/state/stores/puzzle-store';
 import { cn } from '@/utils/cn';
-import { canPlacePiece, checkPuzzleSolved } from '@/utils/puzzleHelpers';
+import {
+	canPlacePiece,
+	checkPuzzleSolved,
+	getRotatedShape
+} from '@/utils/puzzleHelpers';
 import { Check, RotateCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -163,13 +167,76 @@ function PuzzleGameContent() {
 
 	const handlePieceRotate = useCallback(
 		(pieceId: string) => {
-			if (hasCompletedRound) return;
+			if (hasCompletedRound || !puzzle) return;
 
 			// Check if piece is placed on board
 			const placement = localPuzzleStore.proxy.placedPieces[pieceId];
 			if (placement) {
-				// Rotate on board
-				localPuzzleActions.rotatePiece(pieceId);
+				// Validate that the new rotation still fits on the board
+				const piece = puzzle.pieces.find((p) => p.id === pieceId);
+				if (!piece) return;
+
+				const newRotation = (placement.rotation + 1) % 4;
+
+				// Get other placements for collision detection (excluding current piece)
+				const otherPlacements = Object.entries(
+					localPuzzleStore.proxy.placedPieces
+				)
+					.filter(([id]) => id !== pieceId)
+					.map(([, p]) => ({
+						piece: puzzle.pieces.find((pp) => pp.id === p.pieceId)!,
+						placement: p
+					}))
+					.filter((p) => p.piece);
+
+				// Check if rotated piece still fits at current position
+				if (
+					canPlacePiece(
+						puzzle.boardShape,
+						piece,
+						placement.gridX,
+						placement.gridY,
+						newRotation,
+						otherPlacements
+					)
+				) {
+					localPuzzleActions.rotatePiece(pieceId);
+				} else {
+					// Try nudging the piece to fit after rotation
+					const rotatedShape = getRotatedShape(piece.shape, newRotation);
+					const rh = rotatedShape.length;
+					const rw = rotatedShape[0]?.length || 0;
+					const bh = puzzle.boardShape.length;
+					const bw = puzzle.boardShape[0]?.length || 0;
+
+					// Clamp position so the rotated piece stays within board bounds
+					const clampedX = Math.min(placement.gridX, bw - rw);
+					const clampedY = Math.min(placement.gridY, bh - rh);
+
+					if (
+						clampedX >= 0 &&
+						clampedY >= 0 &&
+						canPlacePiece(
+							puzzle.boardShape,
+							piece,
+							clampedX,
+							clampedY,
+							newRotation,
+							otherPlacements
+						)
+					) {
+						// Remove and re-place at nudged position with new rotation
+						localPuzzleActions.removePiece(pieceId).then(() => {
+							localPuzzleActions.placePiece(
+								pieceId,
+								clampedX,
+								clampedY,
+								newRotation
+							);
+						});
+					}
+					// If still can't fit, do nothing (piece stays as-is)
+				}
 			} else {
 				// Rotate in tray
 				setPieceRotations((prev) => ({
@@ -178,7 +245,7 @@ function PuzzleGameContent() {
 				}));
 			}
 		},
-		[hasCompletedRound]
+		[hasCompletedRound, puzzle]
 	);
 
 	const handleRemovePiece = useCallback(
@@ -200,7 +267,10 @@ function PuzzleGameContent() {
 	if (!puzzle) {
 		return (
 			<div className="flex flex-1 items-center justify-center">
-				<p className="text-zinc-400">{t('ui:loading')}</p>
+				<div className="flex flex-col items-center gap-3">
+					<div className="h-8 w-8 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+					<p className="text-zinc-400">{t('ui:loading')}</p>
+				</div>
 			</div>
 		);
 	}
@@ -214,21 +284,26 @@ function PuzzleGameContent() {
 		<div className="flex flex-1 flex-col items-center gap-4 overflow-auto p-4">
 			{/* Header with timer and round info */}
 			<div className="flex w-full items-center justify-between gap-4">
-				<div className="text-sm font-semibold text-zinc-300">
+				<div className="glass-card px-4 py-2 text-sm font-bold text-zinc-200">
 					{t('ui:roundCounter', {
 						current: puzzleState.currentRoundIndex + 1,
 						total: puzzleState.totalRounds
 					})}
 				</div>
-				<PuzzleTimer remainingMs={remainingMs} />
+				<PuzzleTimer
+					remainingMs={remainingMs}
+					totalMs={puzzleState.roundDurationMs}
+				/>
 			</div>
 
 			{/* Completion overlay */}
 			{hasCompletedRound && (
-				<div className="animate-in zoom-in flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 text-white shadow-lg shadow-emerald-500/25">
-					<Check className="h-6 w-6" />
+				<div className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-white shadow-lg shadow-emerald-500/25">
+					<div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+						<Check className="h-5 w-5" />
+					</div>
 					<span className="font-bold">{t('ui:puzzleComplete')}</span>
-					<span className="text-emerald-100">
+					<span className="rounded-lg bg-white/20 px-3 py-1 text-sm font-bold text-emerald-50">
 						+
 						{myProgress?.currentRoundTimeRemaining
 							? Math.floor(myProgress.currentRoundTimeRemaining / 1000) + 100
@@ -251,10 +326,12 @@ function PuzzleGameContent() {
 					disabled={hasCompletedRound}
 					onPieceDragEnd={handlePieceDragEnd}
 					onPieceDoubleTap={handlePieceRotate}
+					onPieceRotate={handlePieceRotate}
 					onPieceRemove={handleRemovePiece}
 					className={cn(
+						'transition-all duration-500',
 						hasCompletedRound &&
-							'ring-4 ring-emerald-500 ring-offset-4 ring-offset-zinc-900'
+							'animate-puzzle-solved ring-4 ring-emerald-500/80 ring-offset-4 ring-offset-zinc-900'
 					)}
 				/>
 			</div>
@@ -268,7 +345,7 @@ function PuzzleGameContent() {
 
 			{/* Piece tray */}
 			{!hasCompletedRound && unplacedPieces.length > 0 && (
-				<div className="flex flex-wrap items-center justify-center gap-4 rounded-xl bg-zinc-800/80 p-4 ring-1 ring-zinc-700 backdrop-blur-sm">
+				<div className="glass-card flex flex-wrap items-center justify-center gap-4 p-4">
 					{unplacedPieces.map((piece) => (
 						<div key={piece.id} className="relative">
 							<DraggablePiece
@@ -286,10 +363,10 @@ function PuzzleGameContent() {
 							{/* Rotate button for accessibility */}
 							<button
 								onClick={() => handlePieceRotate(piece.id)}
-								className="absolute -top-2 -right-2 rounded-full bg-zinc-600 p-1 text-white shadow-md hover:bg-zinc-500"
+								className="absolute -top-2 -right-2 rounded-full bg-zinc-600 p-1.5 text-white shadow-lg ring-1 ring-zinc-500/50 transition-colors hover:bg-teal-500"
 								title={t('ui:rotateTip')}
 							>
-								<RotateCw className="h-4 w-4" />
+								<RotateCw className="h-3.5 w-3.5" />
 							</button>
 						</div>
 					))}

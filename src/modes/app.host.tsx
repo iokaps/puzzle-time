@@ -101,8 +101,10 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 			title: t('ui:howToPlay'),
 			showHandle: true,
 			content: (
-				<div className="prose prose-invert max-w-none">
-					<Markdown>{t('ui:howToPlayMd')}</Markdown>
+				<div className="max-h-full w-full overflow-y-auto bg-zinc-900 px-4 py-6">
+					<article className="prose prose-invert mx-auto max-w-none">
+						<Markdown>{t('ui:howToPlayMd')}</Markdown>
+					</article>
 				</div>
 			)
 		});
@@ -118,15 +120,15 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 				{puzzleState.phase === 'lobby' && (
 					<div className="space-y-6">
 						{/* Game Configuration */}
-						<div className="rounded-xl bg-zinc-800 p-6">
-							<div className="mb-4 flex items-center justify-between">
-								<h2 className="text-xl font-bold text-white">
+						<div className="glass-card p-6">
+							<div className="mb-6 flex items-center justify-between">
+								<h2 className="text-xl font-extrabold text-white">
 									{t('ui:gameSettings')}
 								</h2>
 								<button
 									type="button"
 									onClick={handleOpenHowToPlay}
-									className="flex items-center gap-2 rounded-lg bg-zinc-700 px-3 py-2 text-sm text-zinc-300 transition-colors hover:bg-zinc-600"
+									className="flex items-center gap-2 rounded-xl border border-zinc-600/50 bg-zinc-700/50 px-4 py-2.5 text-sm font-medium text-zinc-300 transition-all hover:border-zinc-500/50 hover:bg-zinc-600/50"
 								>
 									<HelpCircle className="h-4 w-4" />
 									{t('ui:howToPlay')}
@@ -145,10 +147,10 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 												key={diff}
 												onClick={() => puzzleActions.toggleDifficulty(diff)}
 												className={cn(
-													'flex items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors',
+													'flex items-center gap-3 rounded-xl px-4 py-3.5 text-left transition-all duration-200',
 													isSelected(diff)
-														? 'bg-teal-500 text-white'
-														: 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600'
+														? 'bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-teal-500/20'
+														: 'border border-zinc-600/50 bg-zinc-700/50 text-zinc-300 hover:border-zinc-500/50 hover:bg-zinc-600/50'
 												)}
 											>
 												<div
@@ -196,17 +198,19 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 										max={15}
 										value={puzzleState.totalRounds}
 										onChange={handleRoundsChange}
-										className="w-24 rounded-lg bg-zinc-700 px-4 py-3 text-lg font-medium text-white focus:ring-2 focus:ring-teal-500 focus:outline-none"
+										className="w-24 rounded-xl border border-zinc-600/50 bg-zinc-700/50 px-4 py-3 text-lg font-bold text-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/30 focus:outline-none"
 									/>
 								</div>
 							</div>
 						</div>
 
 						{/* Players waiting */}
-						<div className="rounded-xl bg-zinc-800 p-6">
-							<div className="flex items-center gap-2 text-white">
-								<Users className="h-5 w-5" />
-								<span className="text-lg font-semibold">
+						<div className="glass-card p-6">
+							<div className="flex items-center gap-3 text-white">
+								<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-500/20">
+									<Users className="h-5 w-5 text-teal-400" />
+								</div>
+								<span className="text-lg font-bold">
 									{onlinePlayersCount} {t('ui:players')}
 								</span>
 							</div>
@@ -216,7 +220,7 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 									{players.map((player) => (
 										<li
 											key={player.id}
-											className="flex items-center justify-between rounded-lg bg-zinc-700 px-4 py-2"
+											className="flex items-center justify-between rounded-xl border border-zinc-700/30 bg-zinc-700/30 px-4 py-2.5 backdrop-blur-sm"
 										>
 											<span className="text-white">{player.name}</span>
 											<span
@@ -240,7 +244,7 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 					<div className="space-y-6">
 						{/* Current round info */}
 						<div className="flex items-center justify-between">
-							<div className="text-lg font-semibold text-white">
+							<div className="glass-card px-5 py-3 text-lg font-bold text-white">
 								{t('ui:roundCounter', {
 									current: puzzleState.currentRoundIndex + 1,
 									total: puzzleState.totalRounds
@@ -270,8 +274,8 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 						)}
 
 						{/* Player progress */}
-						<div className="rounded-xl bg-zinc-800 p-4">
-							<h3 className="mb-3 flex items-center gap-2 text-white">
+						<div className="glass-card p-5">
+							<h3 className="mb-3 flex items-center gap-2 font-bold text-white">
 								<Trophy className="h-5 w-5 text-yellow-400" />
 								{t('ui:playerProgress')} ({completedCount}/{players.length})
 							</h3>
@@ -281,10 +285,10 @@ function App({ clientContext }: ModeGuardProps<'host'>) {
 									<div
 										key={player.id}
 										className={cn(
-											'flex items-center justify-between rounded-lg px-3 py-2',
+											'flex items-center justify-between rounded-xl px-4 py-2.5 transition-all',
 											player.progress?.currentRoundCompleted
-												? 'border border-emerald-500/50 bg-emerald-500/20'
-												: 'bg-zinc-700'
+												? 'border border-emerald-500/40 bg-emerald-500/10 shadow-sm shadow-emerald-500/10'
+												: 'border border-zinc-700/30 bg-zinc-700/30'
 										)}
 									>
 										<span className="text-white">{player.name}</span>

@@ -1,5 +1,5 @@
 {
-	"gameLobbyMd": "# 🧩 Puzzle Time!\n\nWelcome to Puzzle Time - a fast-paced puzzle game!\n\n## How to Play\n\n1. **Drag pieces** onto the board to fill all the empty spaces\n2. **Double-tap** a piece to rotate it 90°\n3. **Complete the puzzle** before time runs out!\n4. **Faster = More points** - You get bonus points for time remaining\n\n## Scoring\n\n- 🎯 **100 points** for completing a puzzle\n- ⏱️ **+1 point** per second remaining\n- 🏆 **Maximum: 160 points** per round\n\n---\n\n*Waiting for host to start the game...*",
+	"gameLobbyMd": "# 🧩 Puzzle Time!\n\nWelcome to Puzzle Time - a fast-paced puzzle game!\n\n## How to Play\n\n1. **Drag pieces** onto the board to fill all the empty spaces\n2. **Double-tap** or use the **↻ button** to rotate a piece — even after placing it!\n3. **Complete the puzzle** before time runs out!\n4. **Faster = More points** - You get bonus points for time remaining\n\n## Scoring\n\n- 🎯 **100 points** for completing a puzzle\n- ⏱️ **+1 point** per second remaining\n- 🏆 **Maximum: 160 points** per round\n\n---\n\n*Waiting for host to start the game...*",
 
 	"connectionsMd": "Scan the QR to join the game.",
 
@@ -14,7 +14,7 @@
 	"stopButton": "End Game",
 	"loading": "Loading...",
 
-	"menuHelpMd": "# Help\n\n## How to Play\n\n1. **Drag pieces** from the tray onto the board\n2. **Double-tap** any piece to rotate it 90°\n3. Fill all empty spaces before the timer runs out!\n\n## Tips\n\n- Pieces snap to the grid automatically\n- Tap a placed piece to return it to the tray\n- Faster completion = more bonus points!\n\n## Scoring\n\n- 100 base points per puzzle\n- +1 point per second remaining\n- Max 160 points per round",
+	"menuHelpMd": "# Help\n\n## How to Play\n\n1. **Drag pieces** from the tray onto the board\n2. **Double-tap** or tap the **↻ button** to rotate a piece — works on the board too!\n3. Fill all empty spaces before the timer runs out!\n\n## Tips\n\n- Pieces snap to the grid automatically\n- You can rotate placed pieces directly on the board\n- Drag a piece off the board to return it to the tray\n- Faster completion = more bonus points!\n\n## Scoring\n\n- 100 base points per puzzle\n- +1 point per second remaining\n- Max 160 points per round",
 
 	"createProfileMd": "# 🧩 Puzzle Time!\n\nEnter your name to join the game.",
 
@@ -36,7 +36,7 @@
 	"resetButton": "Reset",
 
 	"puzzleInstructions": "Drag pieces onto the board to fill all spaces!",
-	"rotateTip": "Double-tap to rotate • Tap placed piece to remove",
+	"rotateTip": "Double-tap or tap the ↻ button to rotate",
 	"timeRemaining": "Time Remaining",
 	"roundCounter": "Round {{current}} of {{total}}",
 	"puzzleComplete": "Puzzle Complete!",
@@ -77,5 +77,5 @@
 	"yourRankMessage": "You placed #{{rank}}",
 
 	"howToPlay": "How to Play",
-	"howToPlayMd": "# 🧩 How to Play Puzzle Time\n\n## Objective\nFill all empty spaces on the board using the given pieces before the 60-second timer runs out!\n\n## Controls\n\n- **Drag pieces** from the tray onto the board\n- **Double-tap/click** a piece to rotate it 90°\n- **Tap a placed piece** to return it to the tray\n- Pieces will **snap to the grid** automatically\n\n## Difficulty Levels\n\n| Level | Pieces | Board Size |\n|-------|--------|------------|\n| 🟢 Easy | 3 pieces | Small |\n| 🟡 Medium | 4 pieces | Medium |\n| 🔴 Hard | 5 pieces | Large |\n\n## Scoring\n\n- **100 points** base for completing a puzzle\n- **+1 point** for each second remaining\n- **Maximum: 160 points** per round (solved instantly)\n- **0 points** if time runs out\n\n## Tips\n\n- 💡 Start with corner and edge pieces\n- 🔄 Remember you can rotate pieces!\n- ⚡ Speed matters for bonus points\n- 🎯 All pieces must be used to complete the puzzle"
+	"howToPlayMd": "# 🧩 How to Play Puzzle Time\n\n## Objective\nFill all empty spaces on the board using the given pieces before the 60-second timer runs out!\n\n## Controls\n\n- **Drag pieces** from the tray onto the board\n- **Double-tap/click** or use the **↻ button** to rotate a piece 90°\n- **Rotate placed pieces** directly on the board — no need to remove them first!\n- **Drag a piece off the board** to return it to the tray\n- Pieces will **snap to the grid** automatically\n\n## Difficulty Levels\n\n| Level | Pieces | Board Size |\n|-------|--------|------------|\n| 🟢 Easy | 3 pieces | Small |\n| 🟡 Medium | 4 pieces | Medium |\n| 🔴 Hard | 5 pieces | Large |\n\n## Scoring\n\n- **100 points** base for completing a puzzle\n- **+1 point** for each second remaining\n- **Maximum: 160 points** per round (solved instantly)\n- **0 points** if time runs out\n\n## Tips\n\n- 💡 Start with corner and edge pieces\n- 🔄 Rotate pieces on the board — no need to remove and re-add!\n- ⚡ Speed matters for bonus points\n- 🎯 All pieces must be used to complete the puzzle"
 }

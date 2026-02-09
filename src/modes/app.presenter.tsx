@@ -82,7 +82,7 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 						<div className="flex flex-1 flex-col items-center justify-center gap-6">
 							{/* Round and Timer */}
 							<div className="flex items-center gap-8">
-								<div className="rounded-xl bg-zinc-800 px-6 py-3 text-2xl font-bold text-white">
+								<div className="glass-card px-6 py-3 text-2xl font-extrabold text-white">
 									{t('ui:roundCounter', {
 										current: puzzleState.currentRoundIndex + 1,
 										total: puzzleState.totalRounds
@@ -103,7 +103,7 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 
 							{/* Current puzzle preview */}
 							{currentPuzzle && (
-								<div className="rounded-2xl bg-zinc-800/50 p-6">
+								<div className="glass-card p-6">
 									<PuzzleBoard
 										boardShape={currentPuzzle.boardShape}
 										pieces={currentPuzzle.pieces}
@@ -114,8 +114,10 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 							)}
 
 							{/* Completion status */}
-							<div className="flex items-center gap-2 rounded-xl bg-zinc-800 px-6 py-3 text-white">
-								<Users className="h-5 w-5" />
+							<div className="glass-card flex items-center gap-3 px-6 py-3 text-white">
+								<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/20">
+									<Users className="h-5 w-5 text-teal-400" />
+								</div>
 								<span className="text-xl">
 									{completedCount}/{players.length} {t('ui:completed')}
 								</span>
@@ -123,8 +125,8 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 						</div>
 
 						{/* Right side - Leaderboard */}
-						<div className="w-80 rounded-xl bg-zinc-800 p-4">
-							<h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-white">
+						<div className="glass-card w-80 p-5">
+							<h2 className="mb-4 flex items-center gap-2 text-xl font-extrabold text-white">
 								<Trophy className="h-6 w-6 text-yellow-400" />
 								{t('ui:leaderboard')}
 							</h2>
@@ -134,20 +136,20 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 									<div
 										key={entry.playerId}
 										className={cn(
-											'flex items-center justify-between rounded-lg px-3 py-2',
+											'flex items-center justify-between rounded-xl px-3 py-2.5 transition-all',
 											entry.currentRoundCompleted
-												? 'border border-emerald-500/50 bg-emerald-500/20'
-												: 'bg-zinc-700'
+												? 'border border-emerald-500/40 bg-emerald-500/10'
+												: 'border border-zinc-700/30 bg-zinc-700/30'
 										)}
 									>
 										<div className="flex items-center gap-3">
 											<span
 												className={cn(
-													'flex h-6 w-6 items-center justify-center rounded-full text-sm font-bold',
-													rank === 0 && 'bg-yellow-500 text-black',
-													rank === 1 && 'bg-zinc-300 text-black',
-													rank === 2 && 'bg-amber-600 text-white',
-													rank > 2 && 'bg-zinc-600 text-white'
+													'flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold',
+													rank === 0 && 'rank-gold text-white',
+													rank === 1 && 'rank-silver text-white',
+													rank === 2 && 'rank-bronze text-white',
+													rank > 2 && 'bg-zinc-600 text-zinc-300'
 												)}
 											>
 												{rank + 1}
@@ -157,7 +159,7 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 												<Check className="h-4 w-4 text-emerald-400" />
 											)}
 										</div>
-										<span className="font-bold text-white">
+										<span className="font-extrabold text-white">
 											{entry.totalScore}
 										</span>
 									</div>
@@ -175,7 +177,7 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 
 				{puzzleState.phase === 'ended' && (
 					<div className="flex flex-col items-center justify-center gap-8">
-						<h1 className="text-5xl font-bold text-white">
+						<h1 className="text-5xl font-extrabold text-white">
 							🎉 {t('ui:finalResults')}
 						</h1>
 
@@ -185,29 +187,29 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 								<div
 									key={entry.playerId}
 									className={cn(
-										'flex items-center gap-4 rounded-xl border p-6',
+										'flex items-center gap-4 rounded-2xl border p-6 backdrop-blur-sm',
 										rank === 0 &&
-											'border-yellow-500/50 bg-gradient-to-r from-yellow-500/30 to-yellow-600/10',
+											'border-yellow-500/40 bg-gradient-to-r from-yellow-500/15 to-yellow-600/5',
 										rank === 1 &&
-											'border-zinc-400/50 bg-gradient-to-r from-zinc-400/20 to-zinc-500/10',
+											'border-zinc-400/40 bg-gradient-to-r from-zinc-400/15 to-zinc-500/5',
 										rank === 2 &&
-											'border-amber-600/50 bg-gradient-to-r from-amber-600/20 to-amber-700/10',
-										rank > 2 && 'border-zinc-700 bg-zinc-800/50'
+											'border-amber-600/40 bg-gradient-to-r from-amber-600/15 to-amber-700/5',
+										rank > 2 && 'border-zinc-700/40 bg-zinc-800/40'
 									)}
 								>
 									<div
 										className={cn(
 											'flex h-12 w-12 items-center justify-center rounded-full text-xl font-bold',
-											rank === 0 && 'bg-yellow-500 text-black',
-											rank === 1 && 'bg-zinc-300 text-black',
-											rank === 2 && 'bg-amber-600 text-white',
-											rank > 2 && 'bg-zinc-600 text-white'
+											rank === 0 && 'rank-gold text-white',
+											rank === 1 && 'rank-silver text-white',
+											rank === 2 && 'rank-bronze text-white',
+											rank > 2 && 'bg-zinc-700 text-zinc-300'
 										)}
 									>
 										{rank + 1}
 									</div>
 									<div className="flex-1">
-										<p className="text-2xl font-semibold text-white">
+										<p className="text-2xl font-bold text-white">
 											{entry.name}
 										</p>
 										<p className="text-zinc-400">
@@ -215,7 +217,7 @@ function App({ clientContext }: ModeGuardProps<'presenter'>) {
 										</p>
 									</div>
 									<div className="text-right">
-										<p className="text-4xl font-bold text-white">
+										<p className="text-4xl font-extrabold text-white">
 											{entry.totalScore}
 										</p>
 										<p className="text-zinc-400">{t('ui:points')}</p>

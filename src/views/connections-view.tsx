@@ -40,11 +40,14 @@ export function ConnectionsView({ children }: ConnectionViewProps) {
 			</div>
 
 			{players.length > 0 && (
-				<ul className="w-full divide-y divide-zinc-700 lg:text-lg xl:text-xl 2xl:text-2xl">
+				<ul className="w-full space-y-2 lg:text-lg xl:text-xl 2xl:text-2xl">
 					{players.map((player) => (
-						<li key={player.id} className="py-6">
+						<li
+							key={player.id}
+							className="rounded-xl border border-zinc-700/30 bg-zinc-800/40 px-5 py-4 backdrop-blur-sm"
+						>
 							<div className="flex items-center justify-between">
-								<span className="font-semibold text-white">{player.name}</span>
+								<span className="font-bold text-white">{player.name}</span>
 								<span
 									className={cn(
 										'inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium',

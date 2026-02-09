@@ -14,7 +14,7 @@ export function PlayerMenu() {
 	const handleOpenHelp = () => {
 		openDrawer({
 			content: (
-				<div className="max-h-full w-full overflow-y-auto">
+				<div className="max-h-full w-full overflow-y-auto bg-zinc-900">
 					<div className="container mx-auto px-4 py-16">
 						<article className="prose prose-invert">
 							<Markdown>{t('ui:menuHelpMd')}</Markdown>

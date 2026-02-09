@@ -12,9 +12,11 @@ export function NameLabel({ name }: NameLabelProps) {
 	const { t } = useTranslation();
 
 	return (
-		<div className="flex items-center gap-2">
-			<span className="text-zinc-400">{t('ui:playerNameLabel')}</span>
-			<span className="font-semibold text-white">{name}</span>
+		<div className="flex items-center gap-2.5">
+			<span className="text-zinc-500">{t('ui:playerNameLabel')}</span>
+			<span className="rounded-lg bg-zinc-800/60 px-3 py-1 font-bold text-white">
+				{name}
+			</span>
 		</div>
 	);
 }

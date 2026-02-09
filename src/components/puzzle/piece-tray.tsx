@@ -36,7 +36,7 @@ export function PieceTray({
 	return (
 		<div
 			className={cn(
-				'flex flex-wrap items-center justify-center gap-4 rounded-xl bg-zinc-800/80 p-4 ring-1 ring-zinc-700 backdrop-blur-sm',
+				'glass-card flex flex-wrap items-center justify-center gap-4 p-4',
 				className
 			)}
 		>

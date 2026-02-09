@@ -1,5 +1,5 @@
 /* Font imports */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 /* Imports */
 @import 'tailwindcss';
@@ -33,6 +33,11 @@
 	--color-puzzle-success: #22c55e;
 	--color-puzzle-warning: #f59e0b;
 	--color-puzzle-danger: #ef4444;
+
+	/* Animations */
+	--animate-float: float 6s ease-in-out infinite;
+	--animate-fade-in: fade-in 0.5s ease-out forwards;
+	--animate-scale-in: scale-in 0.3s ease-out forwards;
 }
 
 /* Markdown styling with Tailwind Typography (prose) */
@@ -43,10 +48,38 @@
 	--tw-prose-links: var(--color-teal-400);
 	--tw-prose-bullets: var(--color-zinc-400);
 	--tw-prose-counters: var(--color-zinc-400);
+	--tw-prose-th: var(--color-zinc-200);
+	--tw-prose-td: var(--color-zinc-300);
 	--tw-prose-quotes: var(--color-zinc-300);
 	--tw-prose-pre-bg: var(--color-zinc-800);
 	--tw-prose-pre-code: var(--color-zinc-100);
 	--tw-prose-hr: var(--color-zinc-700);
+}
+
+/* Force Kokimoki drawer/dialog to use dark theme */
+[role='dialog'][class*='bg-white'] {
+	background-color: var(--color-zinc-900) !important;
+	color: var(--color-zinc-100);
+}
+
+/* Drawer overlay — darken to match dark theme */
+[data-vaul-overlay] {
+	background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Drawer title and description text */
+[role='dialog'] [class*='text-lg'] {
+	color: var(--color-white);
+}
+
+/* Drawer handle bar */
+[data-vaul-handle] {
+	background-color: var(--color-zinc-600) !important;
+}
+
+/* Drawer footer */
+[role='dialog'] .bg-gray-100 {
+	background-color: var(--color-zinc-800) !important;
 }
 
 html,
@@ -55,30 +88,95 @@ body {
 }
 
 .km-input {
-	@apply w-full max-w-96 rounded-xl border border-zinc-600 bg-zinc-800 px-5 py-3 text-white transition-colors placeholder:text-zinc-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/50 focus:outline-none disabled:opacity-50;
+	@apply w-full max-w-96 rounded-xl border border-zinc-600/50 bg-zinc-800/80 px-5 py-3 text-white shadow-inner backdrop-blur-sm transition-all placeholder:text-zinc-500 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/30 focus:outline-none disabled:opacity-50;
 }
 
 .km-btn-primary,
 .km-btn-secondary,
 .km-btn-error,
 .km-btn-neutral {
-	@apply inline-flex items-center justify-center gap-3 rounded-xl px-5 py-3 font-semibold transition-all not-disabled:cursor-pointer disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-500 disabled:opacity-50;
+	@apply inline-flex items-center justify-center gap-3 rounded-xl px-5 py-3 font-bold tracking-wide transition-all duration-200 not-disabled:cursor-pointer not-disabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-500 disabled:opacity-50;
 }
 
 .km-btn-primary {
-	@apply not-disabled:bg-gradient-to-r not-disabled:from-teal-500 not-disabled:to-emerald-500 not-disabled:text-white not-disabled:shadow-lg not-disabled:shadow-teal-500/25 not-disabled:hover:from-teal-400 not-disabled:hover:to-emerald-400 not-disabled:hover:shadow-teal-500/40;
+	@apply not-disabled:bg-gradient-to-r not-disabled:from-teal-500 not-disabled:to-emerald-500 not-disabled:text-white not-disabled:shadow-lg not-disabled:shadow-teal-500/25 not-disabled:hover:-translate-y-0.5 not-disabled:hover:from-teal-400 not-disabled:hover:to-emerald-400 not-disabled:hover:shadow-xl not-disabled:hover:shadow-teal-500/30;
 }
 
 .km-btn-secondary {
-	@apply not-disabled:bg-zinc-700 not-disabled:text-zinc-100 not-disabled:hover:bg-zinc-600;
+	@apply not-disabled:border not-disabled:border-zinc-600/50 not-disabled:bg-zinc-700/80 not-disabled:text-zinc-100 not-disabled:backdrop-blur-sm not-disabled:hover:border-zinc-500/50 not-disabled:hover:bg-zinc-600/80;
 }
 
 .km-btn-error {
-	@apply not-disabled:bg-gradient-to-r not-disabled:from-red-500 not-disabled:to-rose-500 not-disabled:text-white not-disabled:shadow-lg not-disabled:shadow-red-500/25 not-disabled:hover:from-red-400 not-disabled:hover:to-rose-400;
+	@apply not-disabled:bg-gradient-to-r not-disabled:from-red-500 not-disabled:to-rose-500 not-disabled:text-white not-disabled:shadow-lg not-disabled:shadow-red-500/25 not-disabled:hover:-translate-y-0.5 not-disabled:hover:from-red-400 not-disabled:hover:to-rose-400 not-disabled:hover:shadow-xl not-disabled:hover:shadow-red-500/30;
 }
 
 .km-btn-neutral {
-	@apply not-disabled:bg-zinc-600 not-disabled:text-white not-disabled:hover:bg-zinc-500;
+	@apply not-disabled:border not-disabled:border-zinc-500/50 not-disabled:bg-zinc-600/80 not-disabled:text-white not-disabled:hover:bg-zinc-500/80;
+}
+
+/* Glass card utility */
+.glass-card {
+	@apply rounded-2xl border border-zinc-700/50 bg-zinc-800/60 shadow-xl backdrop-blur-md;
+}
+
+/* Subtle dot pattern background */
+.bg-dots {
+	background-image: radial-gradient(
+		circle,
+		rgba(255, 255, 255, 0.03) 1px,
+		transparent 1px
+	);
+	background-size: 24px 24px;
+}
+
+/* Float animation */
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+	0% {
+		transform: scale(0.9);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* Pulse glow for interactive elements */
+@keyframes pulse-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4);
+	}
+	50% {
+		box-shadow: 0 0 20px 4px rgba(20, 184, 166, 0.2);
+	}
+}
+
+.animate-pulse-glow {
+	animation: pulse-glow 2s ease-in-out infinite;
 }
 
 /* Puzzle completion animation */
@@ -262,4 +360,48 @@ body {
 
 .animate-slide-in-up {
 	animation: slide-in-up 0.5s ease-out forwards;
+}
+
+/* Board cell drop zone styling */
+.board-cell-empty {
+	background: rgba(63, 63, 70, 0.5);
+	border: 2px dashed rgba(113, 113, 122, 0.4);
+	border-radius: 6px;
+	transition: all 0.2s ease;
+}
+
+.board-cell-empty:hover {
+	background: rgba(20, 184, 166, 0.08);
+	border-color: rgba(20, 184, 166, 0.3);
+}
+
+/* Subtle grid lines on the board */
+.puzzle-board-grid {
+	background-image:
+		linear-gradient(rgba(113, 113, 122, 0.08) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(113, 113, 122, 0.08) 1px, transparent 1px);
+}
+
+/* Gradient text helper */
+.text-gradient {
+	background: linear-gradient(135deg, #14b8a6, #22c55e);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* Rank badge glow effects */
+.rank-gold {
+	background: linear-gradient(135deg, #fbbf24, #f59e0b);
+	box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.rank-silver {
+	background: linear-gradient(135deg, #d4d4d8, #a1a1aa);
+	box-shadow: 0 0 15px rgba(161, 161, 170, 0.2);
+}
+
+.rank-bronze {
+	background: linear-gradient(135deg, #d97706, #b45309);
+	box-shadow: 0 0 15px rgba(217, 119, 6, 0.2);
 }

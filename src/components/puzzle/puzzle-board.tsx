@@ -1,6 +1,7 @@
 import type { PlacedPiece } from '@/state/schemas/local-puzzle-schema';
 import type { PuzzlePiece as PuzzlePieceType } from '@/state/schemas/puzzle-schema';
 import { cn } from '@/utils/cn';
+import { RotateCw } from 'lucide-react';
 import { DraggablePiece } from './draggable-piece';
 import { PuzzlePiece } from './puzzle-piece';
 
@@ -20,6 +21,7 @@ interface PuzzleBoardProps {
 		isOnBoard: boolean
 	) => void;
 	onPieceDoubleTap?: (pieceId: string) => void;
+	onPieceRotate?: (pieceId: string) => void;
 	onPieceRemove?: (pieceId: string) => void;
 	onInvalidDrop?: () => void;
 	className?: string;
@@ -38,6 +40,7 @@ export function PuzzleBoard({
 	onCellClick,
 	onPieceDragEnd,
 	onPieceDoubleTap,
+	onPieceRotate,
 	onPieceRemove,
 	onInvalidDrop,
 	className
@@ -48,7 +51,7 @@ export function PuzzleBoard({
 	return (
 		<div
 			className={cn(
-				'relative rounded-2xl bg-zinc-800 p-2 shadow-xl ring-1 ring-zinc-700',
+				'to-zinc-850 relative rounded-2xl bg-gradient-to-br from-zinc-800 p-2 shadow-2xl ring-1 ring-zinc-700/50',
 				className
 			)}
 			style={{
@@ -58,10 +61,11 @@ export function PuzzleBoard({
 		>
 			{/* Board grid container */}
 			<div
-				className="relative"
+				className="puzzle-board-grid relative rounded-lg"
 				style={{
 					width: boardWidth * cellSize,
-					height: boardHeight * cellSize
+					height: boardHeight * cellSize,
+					backgroundSize: `${cellSize}px ${cellSize}px`
 				}}
 			>
 				{/* Render empty spaces (valid drop zones) */}
@@ -70,10 +74,8 @@ export function PuzzleBoard({
 						<div
 							key={`cell-${x}-${y}`}
 							className={cn(
-								'absolute rounded-md transition-colors',
-								isEmpty
-									? 'cursor-pointer border-2 border-dashed border-zinc-600 bg-zinc-700/50 hover:border-teal-500/50 hover:bg-zinc-600/50'
-									: 'bg-transparent'
+								'absolute transition-all duration-200',
+								isEmpty ? 'board-cell-empty cursor-pointer' : 'bg-transparent'
 							)}
 							style={{
 								left: x * cellSize,
@@ -113,24 +115,38 @@ export function PuzzleBoard({
 						);
 					}
 
-					// Render draggable piece that can be repositioned
+					// Render draggable piece that can be repositioned, with rotate button
 					return (
-						<DraggablePiece
-							key={pieceId}
-							piece={piece}
-							cellSize={cellSize}
-							rotation={placement.rotation}
-							isPlaced={true}
-							boardBounds={boardBounds}
-							boardShape={boardShape}
-							gridPosition={{ x: placement.gridX, y: placement.gridY }}
-							onDragEnd={(gridX, gridY, isOnBoard) =>
-								onPieceDragEnd?.(pieceId, gridX, gridY, isOnBoard)
-							}
-							onDoubleTap={() => onPieceDoubleTap?.(pieceId)}
-							onRemoveFromBoard={() => onPieceRemove?.(pieceId)}
-							onInvalidDrop={onInvalidDrop}
-						/>
+						<div key={pieceId} className="group">
+							<DraggablePiece
+								piece={piece}
+								cellSize={cellSize}
+								rotation={placement.rotation}
+								isPlaced={true}
+								boardBounds={boardBounds}
+								boardShape={boardShape}
+								gridPosition={{ x: placement.gridX, y: placement.gridY }}
+								onDragEnd={(gridX, gridY, isOnBoard) =>
+									onPieceDragEnd?.(pieceId, gridX, gridY, isOnBoard)
+								}
+								onDoubleTap={() => onPieceDoubleTap?.(pieceId)}
+								onRemoveFromBoard={() => onPieceRemove?.(pieceId)}
+								onInvalidDrop={onInvalidDrop}
+							>
+								{/* Rotate button overlay on placed piece */}
+								<button
+									onMouseDown={(e) => e.stopPropagation()}
+									onTouchStart={(e) => e.stopPropagation()}
+									onClick={(e) => {
+										e.stopPropagation();
+										onPieceRotate?.(pieceId);
+									}}
+									className="absolute -top-2.5 -right-2.5 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-zinc-600 text-white shadow-lg ring-1 ring-zinc-500/50 transition-all hover:scale-110 hover:bg-teal-500 active:scale-95"
+								>
+									<RotateCw className="h-3 w-3" />
+								</button>
+							</DraggablePiece>
+						</div>
 					);
 				})}
 			</div>

@@ -130,17 +130,27 @@ export function PuzzleResultsView() {
 		switch (rank) {
 			case 0:
 				return (
-					<Trophy className="animate-trophy-bounce h-6 w-6 text-yellow-400" />
+					<div className="rank-gold flex h-10 w-10 items-center justify-center rounded-full">
+						<Trophy className="animate-trophy-bounce h-5 w-5 text-white" />
+					</div>
 				);
 			case 1:
-				return <Medal className="h-6 w-6 text-zinc-300" />;
+				return (
+					<div className="rank-silver flex h-10 w-10 items-center justify-center rounded-full">
+						<Medal className="h-5 w-5 text-white" />
+					</div>
+				);
 			case 2:
-				return <Award className="h-6 w-6 text-amber-500" />;
+				return (
+					<div className="rank-bronze flex h-10 w-10 items-center justify-center rounded-full">
+						<Award className="h-5 w-5 text-white" />
+					</div>
+				);
 			default:
 				return (
-					<span className="w-6 text-center font-bold text-zinc-400">
-						{rank + 1}
-					</span>
+					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-700">
+						<span className="text-sm font-bold text-zinc-300">{rank + 1}</span>
+					</div>
 				);
 		}
 	};
@@ -161,13 +171,13 @@ export function PuzzleResultsView() {
 	const getRankBgColor = (rank: number) => {
 		switch (rank) {
 			case 0:
-				return 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/10 border-yellow-500/50';
+				return 'bg-gradient-to-r from-yellow-500/15 to-yellow-600/5 border-yellow-500/40';
 			case 1:
-				return 'bg-gradient-to-r from-zinc-400/20 to-zinc-500/10 border-zinc-400/50';
+				return 'bg-gradient-to-r from-zinc-400/15 to-zinc-500/5 border-zinc-400/40';
 			case 2:
-				return 'bg-gradient-to-r from-amber-500/20 to-amber-600/10 border-amber-500/50';
+				return 'bg-gradient-to-r from-amber-500/15 to-amber-600/5 border-amber-500/40';
 			default:
-				return 'bg-zinc-800/50 border-zinc-700';
+				return 'bg-zinc-800/40 border-zinc-700/40';
 		}
 	};
 
@@ -178,12 +188,12 @@ export function PuzzleResultsView() {
 
 			{/* Header */}
 			<div className="animate-score-pop text-center">
-				<h1 className="text-3xl font-bold text-white">
+				<h1 className="text-4xl font-extrabold text-white">
 					🎉 {t('ui:finalResults')}
 				</h1>
-				<p className="mt-2 text-zinc-400">{t('ui:gameComplete')}</p>
+				<p className="mt-2 text-lg text-zinc-400">{t('ui:gameComplete')}</p>
 				{myRank >= 0 && (
-					<p className="mt-3 text-lg font-semibold text-teal-400">
+					<p className="text-gradient mt-3 text-xl font-extrabold">
 						{getRankMessage(myRank)}
 					</p>
 				)}
@@ -195,24 +205,24 @@ export function PuzzleResultsView() {
 					<div
 						key={entry.playerId}
 						className={cn(
-							'animate-slide-in-up flex items-center gap-4 rounded-xl border p-4 transition-all',
+							'animate-slide-in-up flex items-center gap-4 rounded-2xl border p-4 backdrop-blur-sm transition-all',
 							getRankBgColor(rank),
-							entry.playerId === kmClient.id && 'ring-2 ring-teal-500',
+							entry.playerId === kmClient.id && 'ring-2 ring-teal-500/60',
 							rank === 0 && 'animate-winner-glow'
 						)}
 						style={{ animationDelay: `${rank * 0.15}s`, opacity: 0 }}
 					>
 						{/* Rank */}
-						<div className="flex h-10 w-10 items-center justify-center">
-							{getRankIcon(rank)}
-						</div>
+						{getRankIcon(rank)}
 
 						{/* Player info */}
 						<div className="flex-1">
-							<p className="font-semibold text-white">
+							<p className="font-bold text-white">
 								{entry.name}
 								{entry.playerId === kmClient.id && (
-									<span className="ml-2 text-xs text-teal-400">(you)</span>
+									<span className="ml-2 rounded-md bg-teal-500/20 px-2 py-0.5 text-xs font-semibold text-teal-400">
+										you
+									</span>
 								)}
 							</p>
 							<p className="text-sm text-zinc-400">
@@ -222,13 +232,13 @@ export function PuzzleResultsView() {
 
 						{/* Animated Score */}
 						<div className="text-right">
-							<p className="text-2xl font-bold text-white">
+							<p className="text-2xl font-extrabold text-white">
 								<AnimatedScore
 									target={entry.totalScore}
 									delay={rank * 150 + 300}
 								/>
 							</p>
-							<p className="text-xs text-zinc-400">{t('ui:points')}</p>
+							<p className="text-xs text-zinc-500">{t('ui:points')}</p>
 						</div>
 					</div>
 				))}
@@ -242,7 +252,7 @@ export function PuzzleResultsView() {
 			{isHost && (
 				<button
 					onClick={() => puzzleActions.resetToLobby()}
-					className="km-btn-primary flex items-center gap-2"
+					className="km-btn-primary flex items-center gap-2 text-lg"
 				>
 					<RotateCcw className="h-5 w-5" />
 					{t('ui:playAgain')}

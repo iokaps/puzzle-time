@@ -18,6 +18,7 @@ interface DraggablePieceProps {
 	onRemoveFromBoard?: () => void;
 	onInvalidDrop?: () => void;
 	className?: string;
+	children?: React.ReactNode;
 }
 
 /**
@@ -37,7 +38,8 @@ export function DraggablePiece({
 	onDoubleTap,
 	onRemoveFromBoard,
 	onInvalidDrop,
-	className
+	className,
+	children
 }: DraggablePieceProps) {
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
@@ -239,16 +241,18 @@ export function DraggablePiece({
 			ref={pieceRef}
 			className={cn(
 				'cursor-grab touch-none select-none active:cursor-grabbing',
-				isDragging && 'z-50 opacity-90',
+				isDragging && 'z-50',
 				isShaking && 'animate-shake',
 				className
 			)}
 			style={{
 				...placedStyle,
 				transform: isDragging
-					? `translate(${dragPosition.x}px, ${dragPosition.y}px) scale(1.05)`
+					? `translate(${dragPosition.x}px, ${dragPosition.y}px) scale(1.08)`
 					: undefined,
-				transition: isDragging ? 'none' : 'transform 0.15s ease-out'
+				transition: isDragging
+					? 'none'
+					: 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)'
 			}}
 			onTouchStart={handleTouchStart}
 			onTouchMove={handleTouchMove}
@@ -262,6 +266,7 @@ export function DraggablePiece({
 				rotation={rotation}
 				isDragging={isDragging}
 			/>
+			{children}
 		</div>
 	);
 }

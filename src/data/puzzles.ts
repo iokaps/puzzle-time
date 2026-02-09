@@ -264,18 +264,15 @@ const easyPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'e9-p1',
 				shape: [
-					[true, true],
 					[true, false],
-					[true, false]
+					[true, true],
+					[true, true]
 				],
 				color: PIECE_COLORS.orange
 			},
 			{
 				id: 'e9-p2',
-				shape: [
-					[true, true],
-					[true, false]
-				],
+				shape: [[true, true]],
 				color: PIECE_COLORS.cyan
 			}
 		]
@@ -508,8 +505,8 @@ const mediumPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'm6-p1',
 				shape: [
-					[true, true, true],
-					[false, true, false]
+					[true, true],
+					[true, true]
 				],
 				color: PIECE_COLORS.purple
 			},
@@ -539,23 +536,21 @@ const mediumPuzzles: PuzzleDefinition[] = [
 		pieces: [
 			{
 				id: 'm7-p1',
-				shape: [
-					[false, true, true],
-					[true, true, false]
-				],
+				shape: [[true], [true], [true]],
 				color: PIECE_COLORS.green
 			},
 			{
 				id: 'm7-p2',
 				shape: [
-					[true, true, false],
-					[false, true, true]
+					[true, true],
+					[true, true],
+					[true, true]
 				],
 				color: PIECE_COLORS.pink
 			},
 			{
 				id: 'm7-p3',
-				shape: [[true, true, true, true]],
+				shape: [[true], [true], [true]],
 				color: PIECE_COLORS.red
 			}
 		]
@@ -923,9 +918,9 @@ const hardPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'h6-p1',
 				shape: [
-					[false, true, false],
-					[true, true, true],
-					[false, true, false]
+					[true, true],
+					[true, false],
+					[true, false]
 				],
 				color: PIECE_COLORS.purple
 			},
@@ -944,7 +939,10 @@ const hardPuzzles: PuzzleDefinition[] = [
 			},
 			{
 				id: 'h6-p4',
-				shape: [[true], [true]],
+				shape: [
+					[true, false],
+					[true, true]
+				],
 				color: PIECE_COLORS.pink
 			},
 			{
@@ -967,27 +965,31 @@ const hardPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'h7-p1',
 				shape: [
-					[true, false, true],
-					[true, true, true]
+					[true, true],
+					[true, true]
 				],
 				color: PIECE_COLORS.red
 			},
 			{
 				id: 'h7-p2',
 				shape: [
-					[false, true, true],
-					[true, true, false]
+					[true, true],
+					[false, true],
+					[false, true]
 				],
 				color: PIECE_COLORS.blue
 			},
 			{
 				id: 'h7-p3',
-				shape: [[true, true, true]],
+				shape: [[true, true, true, true]],
 				color: PIECE_COLORS.yellow
 			},
 			{
 				id: 'h7-p4',
-				shape: [[true], [true]],
+				shape: [
+					[true, false],
+					[true, true]
+				],
 				color: PIECE_COLORS.purple
 			},
 			{
@@ -1009,16 +1011,16 @@ const hardPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'h8-p1',
 				shape: [
-					[true, true, false],
-					[false, true, true]
+					[true, true],
+					[true, false]
 				],
 				color: PIECE_COLORS.cyan
 			},
 			{
 				id: 'h8-p2',
 				shape: [
-					[false, true, true],
-					[true, true, false]
+					[true, true],
+					[false, true]
 				],
 				color: PIECE_COLORS.pink
 			},
@@ -1029,7 +1031,10 @@ const hardPuzzles: PuzzleDefinition[] = [
 			},
 			{
 				id: 'h8-p4',
-				shape: [[true], [true]],
+				shape: [
+					[true, false],
+					[true, true]
+				],
 				color: PIECE_COLORS.red
 			},
 			{
@@ -1072,7 +1077,10 @@ const hardPuzzles: PuzzleDefinition[] = [
 			},
 			{
 				id: 'h9-p4',
-				shape: [[true], [true]],
+				shape: [
+					[true, false],
+					[true, true]
+				],
 				color: PIECE_COLORS.cyan
 			},
 			{
@@ -1095,32 +1103,33 @@ const hardPuzzles: PuzzleDefinition[] = [
 			{
 				id: 'h10-p1',
 				shape: [
-					[false, true, false],
-					[true, true, true],
-					[false, true, false]
+					[true, true],
+					[true, true]
 				],
 				color: PIECE_COLORS.green
 			},
 			{
 				id: 'h10-p2',
-				shape: [
-					[true, true],
-					[true, true]
-				],
+				shape: [[true, true, true]],
 				color: PIECE_COLORS.red
 			},
 			{
 				id: 'h10-p3',
-				shape: [
-					[true, true],
-					[true, true]
-				],
+				shape: [[true], [true], [true]],
 				color: PIECE_COLORS.blue
 			},
 			{
 				id: 'h10-p4',
-				shape: [[true], [true]],
+				shape: [
+					[true, true],
+					[true, true]
+				],
 				color: PIECE_COLORS.yellow
+			},
+			{
+				id: 'h10-p5',
+				shape: [[true, true]],
+				color: PIECE_COLORS.pink
 			}
 		]
 	}
